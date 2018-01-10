@@ -1,0 +1,94 @@
+u¿ytkownicy:
+	id_uzytkownika
+	imie --- CHECK (imie like '[A-Z]%')
+	nazwisko --- CHECK (nazwisko like '[A-Z]%')
+	email --- CHECK (email like '%_@%_.__%')
+	nr_telefonu --- CHECK (ISNUMERIC(nr_telefonu))
+	adres
+	miasto --- CHECK (miasto like '[A-Z]%')
+	kod_pocztowy --- CHECK (kod_pocztowy like '[0-9][0-9]-[0-9][0-9][0-9]')
+
+kategorie_przedmiotow:
+	id
+	nazwa
+	kategoria_nadrzêdna -> kategorie_przedmiotow.id
+
+przedmioty: 
+	id
+	nazwa
+	opis
+	kategoria -> kategorie_przedmiotow.id
+	id_sprzedawcy -> uzytkownicy.id
+	typ [kupteraz/aukcja]
+	cena (cena dla kupteraz; cena wywo³awcza dla aukcji)
+	cena_min_przebicie (tylko dla aukcji)
+	data_zakonczenia
+
+licytacje:
+	id
+	id_przedmiotu -> przedmioty.id
+	id_kupuj¹cego -> uzytkownicy.id
+	cena
+	data_licytowania
+
+transakcje:
+	id
+	id_przedmiotu -> przedmioty.id
+	id_kupujacego -> uzytkownicy.id
+	cena
+	data_wysylki
+
+opinie:
+	id
+	id_wystawiaj¹cego_opinie -> uzytkownicy.id
+	id_transakcji -> transakcje.id
+	ocena [plus/minus]
+	opis
+	
+_____________________________________________________
+Komentarz
+
+1. Tabela "licytacje" s³u¿y tylko wpisywaniu tam
+rekordów odnoœnie licytowania przedmiotów
+wystawionych na licytacjê.
+
+2. Tabela "transakcje" zawiera finalne transakcje
+pomiêdzy klientem a sprzedawc¹.
+
+3. To znaczy, ¿e je¿eli ktoœ kupi przedmiot jako
+kupTeraz to pojawia siê rekord w transakcjach.
+Przepisywany jest tam id przedmiotu, id kupuj¹cego,
+a tak¿e cena.
+
+4. Je¿eli natomiast przedmiot wystawiony jest na licytacjê
+i minie data zakoñczenia licytacji, wówczas ostatnia
+licytacja (czyli wygrywaj¹ca) zostaje przepisana
+do tabeli transakcje z okreœlon¹ cen¹ itd.
+
+5. Dodatkowo w "transakcjach" jest zawarta kolumna
+z dat¹ wysy³ki, to jest taki bajer, ¿e mo¿na sobie
+sprawdziæ, czy paczka zosta³a wys³ana itd.
+
+6. Ca³oœæ zmian umotywowana jest tym, ¿eby oddzieliæ
+licytacje od tabeli stricte zawieraj¹ ju¿
+"klepniêt¹" transakcje, sprzeda¿.
+
+7. W opiniach zmieni³em 3. kolumnê, gdzie by³o
+"id_przedmiotu" na "id_transakcji", ¿eby
+u¿ytkownik ocenia³ transakcjê, a nie bezpoœrednio
+przedmiot.
+
+UWAGA: PYTANIE
+Czy zrobiæ tak, ¿e w tabeli "transakcje" bêdzie równie¿
+id sprzedaj¹cego? Z jednej strony to kolejne kopiowanie,
+czy te¿ powielanie danych, które mo¿na uzyskaæ w inny sposób,
+z drugiej pojawia siê dziwna sytuacja, gdy mamy "opinie".
+
+¯eby uzyskaæ id sprzedawcy w "opiniach" musimy siê pofatygowaæ
+i iœæ w ten sposób
+
+"opinie" -> (po id_transakcji) -> "transakcje" -> (po id_przedmiotu) -> "przedmioty" -> id_sprzedawcy
+
+W sumie jak to sobie rozpisa³em to wychodzi na to, ¿e lepiej
+umieœciæ w transakcjach id tego pieprzonego sprzedawcy, ¿eby
+by³ spokój, ale jeszcze dam Ci szansê na ocenê.
