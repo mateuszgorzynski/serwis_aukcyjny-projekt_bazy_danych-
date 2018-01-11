@@ -18,7 +18,7 @@ PostCode VARCHAR(6) CHECK (PostCode LIKE '[0-9][0-9]-[0-9][0-9][0-9]%') NOT NULL
 CREATE TABLE ItemCategories(
 IdCategory INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
 [Name] VARCHAR(250) CHECK ([Name] LIKE '[A-Z]%') NOT NULL,
-ParentCategory INT NOT NULL,
+ParentCategory INT DEFAULT(NULL) ,
 CONSTRAINT FKItemCategoriesParentCategory FOREIGN KEY (ParentCategory) REFERENCES ItemCategories(IdCategory),
 )
 CREATE TABLE Items(
@@ -29,7 +29,7 @@ Category INT NOT NULL,
 Seller INT NOT NULL,
 [Type] BIT NOT NULL,
 Price INT NOT NULL,
-MinRaise INT NOT NULL,
+MinRaise INT NULL,
 FinishDate DATETIME NOT NULL,
 CONSTRAINT FKItemsCategory FOREIGN KEY (Category) REFERENCES ItemCategories(IdCategory),
 CONSTRAINT FKItemsSeller FOREIGN KEY (Seller) REFERENCES Users(IdUser),

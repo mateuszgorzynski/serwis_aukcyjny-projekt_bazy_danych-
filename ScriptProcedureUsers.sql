@@ -1,4 +1,4 @@
-﻿IF OBJECT_ID('...','...') IS NOT NULL
+﻿IF OBJECT_ID('InsertUser','P') IS NOT NULL
 DROP PROCEDURE InsertUser
 GO
 
@@ -82,7 +82,7 @@ AS
 		 --5. Set New Iduser wowowowowowowow
         SET @IdUser = (SELECT ISNULL(MAX(IdUser),0)+1 FROM adr7dev_mateusz.Users)
 
-		--7. Wstaw nowego pracownika:
+		--7. Insert new user:
         INSERT INTO adr7dev_mateusz.Users(FirstName,LastName,Email, PhoneNumber,[Address],City,PostCode)
         VALUES (@FirstName, @LastName, @Email, @PhoneNumber,@Address,@City,@PostCode)
 
@@ -96,7 +96,7 @@ GO
 
 
 BEGIN TRY
-        --EXEC InsertUser @FirstName = 'Mateusz', @LastName='Górzyński', @Email='matgor9@st.amu.edu.pl', @PhoneNumber='123456789', @Address='Piątkowska 80 B', @City ='Poznań', @PostCode='60-649'
+        EXEC InsertUser @FirstName = 'Mateusz', @LastName='Górzyński', @Email='matgor9@st.amu.edu.pl', @PhoneNumber='123456789', @Address='Piątkowska 80 B', @City ='Poznań', @PostCode='60-649'
 		EXEC InsertUser @FirstName = 'Adrian', @LastName='Parniewicz', @Email='adrpar1@st.amu.edu.pl', @PhoneNumber='987654321', @Address='Ściegiennego 38', @City ='Poznań', @PostCode='60-134'  
 
 END TRY
