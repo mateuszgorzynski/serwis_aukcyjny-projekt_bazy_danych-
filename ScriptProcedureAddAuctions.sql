@@ -42,7 +42,7 @@ AS
 	BEGIN
 
 		SET @MinRaise = (SELECT MinRaise FROM adr7dev_mateusz.Items WHERE IdItem = @IdItem)
-		SET @CurrentMax = (SELECT MAX(Price) FROM adr7dev_mateusz.Auctions)
+		SET @CurrentMax = (SELECT MAX(Price) FROM adr7dev_mateusz.Auctions WHERE IdItem = @IdItem)
 
 		IF NOT EXISTS (SELECT * FROM adr7dev_mateusz.Auctions WHERE Price = @CurrentMax AND IdBuyer != @IdBuyer)
 			RAISERROR (N'User can not beat its own bid.', 16, 1)
@@ -56,10 +56,9 @@ AS
 
 GO
 
-
 BEGIN TRY
 	-- PATTERN (REPLACE # WITH CORRECT VALUE)
-	-- EXEC InsertAuctions @IdItem = #, @IdBuyer = #, @Price = #
+	-- EXEC InsertAuctions @IdItem = 5, @IdBuyer = 3, @Price = 2000
 END TRY
 BEGIN CATCH
 	SELECT  ERROR_NUMBER() AS ErrorNumber ,ERROR_MESSAGE() AS ErrorMessage;
