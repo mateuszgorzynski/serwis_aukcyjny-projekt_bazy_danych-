@@ -9,7 +9,8 @@ CREATE PROCEDURE InsertUser (
 	@PhoneNumber VARCHAR(9),
 	@Address VARCHAR(250),
 	@City VARCHAR(250),
-	@PostCode VARCHAR(6)
+	@PostCode VARCHAR(6),
+	@IsBlocked BINARY
 	)
 AS
 
@@ -36,14 +37,14 @@ AS
 	IF (@PostCode NOT LIKE '[0-9][0-9]-[0-9][0-9][0-9]' ) 
 		RAISERROR (N'PostCode format is incorrect.', 16, 1)
 
-	INSERT INTO adr7dev_mateusz.Users(FirstName, LastName, Email, PhoneNumber, [Address], City, PostCode)
-	VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Address, @City, @PostCode)
+	INSERT INTO adr7dev_mateusz.Users(FirstName, LastName, Email, PhoneNumber, [Address], City, PostCode, IsBlocked)
+	VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Address, @City, @PostCode, @IsBlocked)
 
 GO
 
 BEGIN TRY
 	-- PATTERN (REPLACE # WITH CORRECT VALUE)
-	-- EXEC InsertUser @FirstName = #, @LastName = #, @Email = #, @PhoneNumber = #, @Address = #, @City = #, @PostCode = #
+	-- EXEC InsertUser @FirstName = #, @LastName = #, @Email = #, @PhoneNumber = #, @Address = #, @City = #, @PostCode = #, @IsBlocked = #
 END TRY
 BEGIN CATCH
         SELECT  ERROR_NUMBER() AS ErrorNumber ,ERROR_MESSAGE() AS ErrorMessage;
