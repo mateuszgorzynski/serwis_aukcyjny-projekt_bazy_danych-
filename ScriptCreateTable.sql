@@ -13,7 +13,9 @@ CREATE TABLE Users (
 	PhoneNumber VARCHAR(9) CHECK (PhoneNumber LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]%') NOT NULL,
 	[Address] VARCHAR(250) NOT NULL,
 	City VARCHAR(250) CHECK (City LIKE '[A-Z]%'),
-	PostCode VARCHAR(6) CHECK (PostCode LIKE '[0-9][0-9]-[0-9][0-9][0-9]%') NOT NULL
+	PostCode VARCHAR(6) CHECK (PostCode LIKE '[0-9][0-9]-[0-9][0-9][0-9]%') NOT NULL,
+	IsBlocked BIT DEFAULT(0)
+
 )
 
 CREATE TABLE ItemCategories (
