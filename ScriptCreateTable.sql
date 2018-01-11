@@ -13,7 +13,9 @@ CREATE TABLE Users (
 	PhoneNumber VARCHAR(9) CHECK (PhoneNumber LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]%') NOT NULL,
 	[Address] VARCHAR(250) NOT NULL,
 	City VARCHAR(250) CHECK (City LIKE '[A-Z]%'),
-	PostCode VARCHAR(6) CHECK (PostCode LIKE '[0-9][0-9]-[0-9][0-9][0-9]%') NOT NULL
+	PostCode VARCHAR(6) CHECK (PostCode LIKE '[0-9][0-9]-[0-9][0-9][0-9]%') NOT NULL,
+	IsBlocked BIT DEFAULT(0)
+
 )
 
 CREATE TABLE ItemCategories (
@@ -34,6 +36,7 @@ CREATE TABLE Items (
 	Price INT NOT NULL,
 	MinRaise INT NULL,
 	FinishDate DATETIME NOT NULL,
+	IsBlocked BIT DEFAULT(0)
 
 	CONSTRAINT FKItemsCategory FOREIGN KEY (Category) REFERENCES ItemCategories(IdCategory),
 	CONSTRAINT FKItemsSeller FOREIGN KEY (Seller) REFERENCES Users(IdUser),
