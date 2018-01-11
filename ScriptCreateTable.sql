@@ -7,27 +7,27 @@ DROP TABLE adr7dev_mateusz.ItemCategories
 
 CREATE TABLE Users(
 IdUser INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
-FirstName VARCHAR CHECK (FirstName LIKE '[A-Z]%') NOT NULL,
-LastName VARCHAR CHECK (LastName LIKE '[A-Z]%') NOT NULL,
-Email VARCHAR CHECK (Email LIKE '%_@%_._%') NOT NULL,
-PhoneNumber VARCHAR(6) CHECK (PhoneNumber LIKE '%[^0-9]%') NOT NULL,
-Adress VARCHAR NOT NULL,
-City VARCHAR CHECK (City LIKE '[A-Z]%'),
+FirstName VARCHAR(250) CHECK (FirstName LIKE '[A-Z]%') NOT NULL,
+LastName VARCHAR(250) CHECK (LastName LIKE '[A-Z]%') NOT NULL,
+Email VARCHAR(254) CHECK (Email LIKE '%_@%_._%') NOT NULL,
+PhoneNumber VARCHAR(9) CHECK (PhoneNumber LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]%') NOT NULL,
+[Address] VARCHAR(250) NOT NULL,
+City VARCHAR(250) CHECK (City LIKE '[A-Z]%'),
 PostCode VARCHAR(6) CHECK (PostCode LIKE '[0-9][0-9]-[0-9][0-9][0-9]%') NOT NULL
 )
 CREATE TABLE ItemCategories(
 IdCategory INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
-CategoryName VARCHAR CHECK (CategoryName LIKE '[A-Z]%') NOT NULL,
+[Name] VARCHAR(250) CHECK ([Name] LIKE '[A-Z]%') NOT NULL,
 ParentCategory INT NOT NULL,
 CONSTRAINT FKItemCategoriesParentCategory FOREIGN KEY (ParentCategory) REFERENCES ItemCategories(IdCategory),
 )
 CREATE TABLE Items(
 IdItem INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
-ItemName VARCHAR NOT NULL,
-ItemDescription TEXT,
+[Name] VARCHAR(250) NOT NULL,
+[Description] TEXT,
 Category INT NOT NULL,
 Seller INT NOT NULL,
-TheType BIT NOT NULL,
+[Type] BIT NOT NULL,
 Price INT NOT NULL,
 MinRaise INT NOT NULL,
 FinishDate DATETIME NOT NULL,
@@ -59,7 +59,7 @@ IdOpinion INT PRIMARY KEY IDENTITY(1,1),
 IdSeller INT NOT NULL,
 IdTransaction INT NOT NULL,
 Note BIT NOT NULL,
-OpinionDescription TEXT NOT NULL,
+[Description] TEXT NOT NULL,
 CONSTRAINT FKOpinionsIdSeller FOREIGN KEY (IdSeller) REFERENCES Users(IdUser),
 CONSTRAINT FKOpinionsIdTransaction FOREIGN KEY (IdTransaction) REFERENCES Transactions(IdTransaction)
 )
