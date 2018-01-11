@@ -34,6 +34,7 @@ CREATE TABLE Items (
 	Price INT NOT NULL,
 	MinRaise INT NULL,
 	FinishDate DATETIME NOT NULL,
+	IsBlocked BIT DEFAULT(0)
 
 	CONSTRAINT FKItemsCategory FOREIGN KEY (Category) REFERENCES ItemCategories(IdCategory),
 	CONSTRAINT FKItemsSeller FOREIGN KEY (Seller) REFERENCES Users(IdUser),
