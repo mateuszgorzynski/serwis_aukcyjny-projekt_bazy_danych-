@@ -561,7 +561,7 @@ AS
 
 
 
-	Select Price,IdBuyer from Transactions where IdItem = @IdItem
+	SELECT Price, IdBuyer from Transactions where IdItem = @IdItem
 GO
 
 IF OBJECT_ID('InsertAuctionToTransactions', 'P') IS NOT NULL
@@ -615,16 +615,20 @@ GO
 CREATE TRIGGER DeleteRecords ON Items
 AFTER  DELETE
 AS
+	DECLARE @IdItem INT
+
      PRINT 'User '+USER_NAME()+' has tried to remove record.';
-     SELECT IdItem,[Name] FROM deleted;
+     SELECT IdItem, [Name] FROM deleted;
 
 	 PRINT 'User '+USER_NAME()+' has tried to add record.';
-	 SELECT IdItem,[Name] FROM deleted;
+	 SELECT IdItem, [Name] FROM deleted;
+
+	 SET @IdItem = (SELECT IdItem FROM deleted)
      
 
-	 UPDATE Items SET IsBlocked = 1 WHERE IdItem = 1 ;
+	 UPDATE Items SET IsBlocked = 1 WHERE IdItem = @IdItem ;
 
-     ROLLBACK;
+	 ROLLBACK;
 GO
 
 IF OBJECT_ID('DeleteUsers') IS NOT NULL
@@ -634,13 +638,18 @@ GO
 CREATE TRIGGER DeleteUsers ON users
 INSTEAD OF DELETE
 AS
+
+	DECLARE @IdUser INT
+
      PRINT 'User '+USER_NAME()+' has tried to remove record.';
      SELECT IdUser FROM deleted;
 
 	 PRINT 'User '+USER_NAME()+' has tried to add record.';
 	 SELECT IdUser FROM deleted;
 
-	 UPDATE Users SET IsBlocked = 1 WHERE IdUser = 1 ;
+	  SET @IdUser = (SELECT IdUser FROM deleted)
+
+	 UPDATE Users SET IsBlocked = 1 WHERE IdUser = @IdUser ;
 
 GO
 
