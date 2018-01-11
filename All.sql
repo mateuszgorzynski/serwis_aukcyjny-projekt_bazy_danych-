@@ -590,7 +590,7 @@ AS
 	
 		IF EXISTS (SELECT * FROM adr7dev_mateusz.Transactions WHERE IdItem = @IdItem)
 		BEGIN
-			RAISERROR (N'Item must be auction type.', 16,  1)
+			RAISERROR (N'The action is already in transactions.', 16,  1)
 		END
 
 		ELSE

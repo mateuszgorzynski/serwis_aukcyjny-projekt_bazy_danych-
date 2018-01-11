@@ -6,8 +6,6 @@ CREATE PROCEDURE InsertAuctionToTransactions (
 	@IdItem INT
 	)
 AS
-	DECLARE @foo INT
-	DECLARE @CurrentMax INT
 
 	IF (@IdItem IS NULL)
 		RAISERROR (N'IdItem can not be empty.', 16,  1)
@@ -23,25 +21,33 @@ AS
 
 	IF EXISTS (SELECT * FROM adr7dev_mateusz.Items WHERE FinishDate < GETDATE())
 	BEGIN
-		
-		SET @CurrentMax = (SELECT MAX(Price) FROM adr7dev_mateusz.Auctions WHERE IdItem = @IdItem)
+	
+		IF EXISTS (SELECT * FROM adr7dev_mateusz.Transactions WHERE IdItem = @IdItem)
+		BEGIN
+			RAISERROR (N'The action is already in transactions.', 16,  1)
+		END
 
-		(SELECT ItemId, MAX(Price) FROM adr7dev_mateusz.Auctions WHERE IdItem = @IdItem)
+		ELSE
+
+		BEGIN
+			INSERT INTO adr7dev_mateusz.Transactions(IdItem, IdBuyer, Price, SendDate)
+			SELECT TOP 1 IdItem, IdBuyer, Price, GETDATE() as SendDate FROM adr7dev_mateusz.Auctions WHERE IdItem = @IdItem ORDER BY Price DESC
+		END
 	END
-
-	--INSERT INTO adr7dev_mateusz.Transactions(IdItem, IdBuyer, Price, SendDate)
-	--VALUES (@IdItem, @IdBuyer, @Price, @SendDate)
 
 GO
 
+
+SELECT * FROM Auctions
+SELECT * FROM Transactions
+
+
 BEGIN TRY
-	-- PATTERN (REPLACE # WITH CORRECT VALUE)
 	EXEC InsertAuctionToTransactions @IdItem = 5
 END TRY
 BEGIN CATCH
         SELECT  ERROR_NUMBER() AS ErrorNumber ,ERROR_MESSAGE() AS ErrorMessage;
 END CATCH
 
-SELECT * FROM Items
 SELECT * FROM Auctions
 SELECT * FROM Transactions
