@@ -1,3 +1,5 @@
+DROP TABLE adr7dev_mateusz.Opinions
+DROP TABLE adr7dev_mateusz.Transactions
 DROP TABLE adr7dev_mateusz.Auctions
 DROP TABLE adr7dev_mateusz.Items
 DROP TABLE adr7dev_mateusz.Users
@@ -17,7 +19,7 @@ CREATE TABLE ItemCategories(
 IdCategory INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
 CategoryName VARCHAR CHECK (CategoryName LIKE '[A-Z]%') NOT NULL,
 ParentCategory INT NOT NULL,
-CONSTRAINT FKParentCategory FOREIGN KEY (ParentCategory) REFERENCES ItemCategories(IdCategory),
+CONSTRAINT FKItemCategoriesParentCategory FOREIGN KEY (ParentCategory) REFERENCES ItemCategories(IdCategory),
 )
 CREATE TABLE Items(
 IdItem INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
@@ -29,8 +31,8 @@ TheType BIT NOT NULL,
 Price INT NOT NULL,
 MinRaise INT NOT NULL,
 FinishDate DATETIME NOT NULL,
-CONSTRAINT FKCategory FOREIGN KEY (Category) REFERENCES ItemCategories(IdCategory),
-CONSTRAINT FKSeller FOREIGN KEY (Seller) REFERENCES Users(IdUser),
+CONSTRAINT FKItemsCategory FOREIGN KEY (Category) REFERENCES ItemCategories(IdCategory),
+CONSTRAINT FKItemsSeller FOREIGN KEY (Seller) REFERENCES Users(IdUser),
 )
 CREATE TABLE Auctions(
 IdAuction INT PRIMARY KEY IDENTITY(1,1),
@@ -38,6 +40,26 @@ IdItem INT NOT NULL,
 IdBuyer INT NOT NULL,
 Price INT NOT NULL,
 BiddingDate DATETIME NOT NULL,
-CONSTRAINT FKItem FOREIGN KEY (IdItem) REFERENCES Items(IdItem),
-CONSTRAINT FKBuyer FOREIGN KEY (IdBuyer) REFERENCES Users(IdUser),
+CONSTRAINT FKAuctionsItem FOREIGN KEY (IdItem) REFERENCES Items(IdItem),
+CONSTRAINT FKAuctionsBuyer FOREIGN KEY (IdBuyer) REFERENCES Users(IdUser),
+)
+
+CREATE TABLE Transactions(
+IdTransaction INT PRIMARY KEY IDENTITY(1,1),
+IdItem INT NOT NULL,
+IdBuyer INT NOT NULL,
+Price INT NOT NULL,
+SendDate DATE NOT NULL,
+CONSTRAINT FKTransactionsItem FOREIGN KEY (IdItem) REFERENCES Items(IdItem),
+CONSTRAINT FKTransactionsIdBuyer FOREIGN KEY (IdBuyer) REFERENCES Users(IdUser)
+)
+
+CREATE TABLE Opinions(
+IdOpinion INT PRIMARY KEY IDENTITY(1,1),
+IdSeller INT NOT NULL,
+IdTransaction INT NOT NULL,
+Note BIT NOT NULL,
+OpinionDescription TEXT NOT NULL,
+CONSTRAINT FKOpinionsIdSeller FOREIGN KEY (IdSeller) REFERENCES Users(IdUser),
+CONSTRAINT FKOpinionsIdTransaction FOREIGN KEY (IdTransaction) REFERENCES Transactions(IdTransaction)
 )
