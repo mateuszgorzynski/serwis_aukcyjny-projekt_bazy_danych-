@@ -18,13 +18,13 @@ AS
 	IF NOT EXISTS (SELECT * FROM adr7dev_mateusz.Items WHERE IdItem = @IdItem)
 		RAISERROR (N'IdItem must be an existing item.', 16, 1)
 
-	IF NOT EXISTS (SELECT * FROM adr7dev_mateusz.Items WHERE Seller != @IdBuyer)
+	IF NOT EXISTS (SELECT * FROM adr7dev_mateusz.Items WHERE IdItem = @IdItem AND Seller != @IdBuyer)
 		RAISERROR (N'The buyer can not be the item seller.', 16, 1)
 
-	IF NOT EXISTS (SELECT * FROM adr7dev_mateusz.Items WHERE FinishDate > GETDATE())
+	IF NOT EXISTS (SELECT * FROM adr7dev_mateusz.Items WHERE IdItem = @IdItem AND FinishDate > GETDATE())
 		RAISERROR (N'User can not bid after FinishDate.', 16, 1)
 
-	IF NOT EXISTS (SELECT * FROM adr7dev_mateusz.Items WHERE [Type] = 1)
+	IF NOT EXISTS (SELECT * FROM adr7dev_mateusz.Items WHERE IdItem = @IdItem AND [Type] = 1)
 		RAISERROR (N'Item must be set to auction mode.', 16, 1)
 
 	IF NOT EXISTS (SELECT * FROM adr7dev_mateusz.Users WHERE IdUser = @IdBuyer)
