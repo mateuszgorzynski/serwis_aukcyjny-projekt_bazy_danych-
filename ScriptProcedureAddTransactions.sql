@@ -6,7 +6,7 @@ CREATE PROCEDURE InsertTransactions (
 	@IdItem INT,
 	@IdBuyer INT,
 	@Price BINARY,
-	@SendDate TEXT
+	@SendDate DATE
 	)
 AS
 
