@@ -33,7 +33,7 @@ END CATCH
 -- Dodawanie nowego u¿ytkownika do bazy danych.
 
 BEGIN TRY
-	--EXEC InsertUser @FirstName = 'Adam', @LastName = 'Adamiak', @Email = 'adamadamiak@mail.pl', @PhoneNumber = 123456789, @Address = 'ul. ¯wirowa 2', @City = 'Warszawa', @PostCode = '42-424', @IsBlocked = 0
+	--EXEC InsertUser @FirstName = 'Adam', @LastName = 'Adamiak', @Email = 'adamadamiak@mail.pl', @PhoneNumber = '123456789', @Address = 'ul. Zwirowa 2', @City = 'Warszawa', @PostCode = '42-424', @IsBlocked = 0
 END TRY
 BEGIN CATCH
         SELECT  ERROR_NUMBER() AS ErrorNumber ,ERROR_MESSAGE() AS ErrorMessage;
