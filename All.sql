@@ -1,20 +1,9 @@
-IF OBJECT_ID('adr7dev_mateusz.Opinions', 'U') IS NOT NULL 
-	DROP TABLE adr7dev_mateusz.Opinions;
-
-IF OBJECT_ID('adr7dev_mateusz.Transactions', 'U') IS NOT NULL 
-	DROP TABLE adr7dev_mateusz.Transactions;
-
-IF OBJECT_ID('adr7dev_mateusz.Auctions', 'U') IS NOT NULL 
-	DROP TABLE adr7dev_mateusz.Auctions;
-	
-IF OBJECT_ID('adr7dev_mateusz.Items', 'U') IS NOT NULL 
-	DROP TABLE aadr7dev_mateusz.Items;
-
-IF OBJECT_ID('aadr7dev_mateusz.Users', 'U') IS NOT NULL 
-	DROP TABLE adr7dev_mateusz.Users;
-
-IF OBJECT_ID('adr7dev_mateusz.ItemCategories', 'U') IS NOT NULL 
-	DROP TABLE adr7dev_mateusz.ItemCategories;
+DROP TABLE adr7dev_mateusz.Opinions
+DROP TABLE adr7dev_mateusz.Transactions
+DROP TABLE adr7dev_mateusz.Auctions
+DROP TABLE aadr7dev_mateusz.Items
+DROP TABLE adr7dev_mateusz.Users
+DROP TABLE adr7dev_mateusz.ItemCategories
 
 CREATE TABLE Users (
 	IdUser INT PRIMARY KEY IDENTITY (1,1) NOT NULL,
